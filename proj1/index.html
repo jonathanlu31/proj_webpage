@@ -4,6 +4,7 @@
     <title>Project 1: Rasterizer</title>
 </head>
 <body>
+<h2>Note: You can find all the images in our google doc <a href="https://docs.google.com/document/d/1T-I_u1ejiNQAHWkrJF7SES2ZlRnHfMoHHbMfiGh2XdQ/edit?usp=sharing"> here:</a></h2>
 <h2>Overview</h2>
 <p>In this project, we implemented a rasterizer with a focus on triangles. We iteratively improved on a naive sampling method to reduce aliasing and improve the quality of the general rendered image. Via methods like supersampling, nearest pixel sampling, and bilinear interpolation, we explored the tradeoffs between efficiency/memory usage and the overall quality/antialiasing of the final product. We also implemented transforms, including translations, rotations, and scales to manipulate our rendered images.</p>
 	
@@ -47,4 +48,6 @@ Nearest pixel: </p>
 
 Earlier, when computing the uv coordinates, we also computed the barycentric (and corresponding uv coordinates) of the x + 1, y coordinate (or x - 1, y in the case that x + 1 was outside of the triangle), as well as the x, y + 1 coordinate (or x, y - 1 in the case that y + 1 was outside of the triangle). This allowed us to calculated dx/uv and dy/uv so we could use the difference vector, scale it and take the norm, and finally calculate the layer by taking log_2 of the maximum between the two.
 
-The trend when selecting a sampling method is that antialiasing comes at the cost of efficiency and memory usage. </p>
+The trend when selecting a sampling method is that antialiasing comes at the cost of efficiency and memory usage. As we can see, L_ZERO and P_NEAREST has the most aliasing, as the tips of the trees are often filled in with some of the blue clouds in the background. Once we progress to P_LINEAR, the aliasing decreases even more, then L_NEAREST. Lastly, Using both L_NEAREST and P_LINEAR results in the least aliasing and the smoothest image as the colors are blended together. </p>
+	
+	
