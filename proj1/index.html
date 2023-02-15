@@ -1,7 +1,50 @@
+<!DOCTYPE html>
 <html>
-	<head>
-	</head>
-	<body>
-		Project 1 here
-	</body>
-</html>
+<head>
+    <title>Project 1: Rasterizer</title>
+</head>
+<body>
+<h2>Overview</h2>
+<p>Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
+	
+<h3>Task 1 (20 pts)</h3>
+	
+<p>For task 1, we rasterized triangles by looping over pixels and sampling the middle to see if it was inside the triangle via the three line test described in lecture. If it was, we simply called fill_pixel. If a point was on the border of a triangle, we simply included that in the rasterization as well. Since the vertices of the triangle could be listed in counter clockwise or clockwise order, we added a check such that if all the angles of the sample point with respect to the normal vector of the edges were all acute, (i.e. cosine &gt; 0) or if the angles were all obtuse (i.e. cosine &lt; 0), the sample would pass the test. 
+Our algorithm is exactly as efficient as checking each sample within the bounding box. We took the minimum x and y values, as well as the maximum x and y values between the three points to create a bounding box and looped over all the pixel coordinates in between. 
+We also made sure to have checks on the sampling and fill_pixel methods to ensure the coordinate was inside the actual frame of the picture.</p>
+	
+<h3>Task 2 (20 pts)</h3>
+	
+<p>For supersampling, we utilized the sample buffer to hold all the sample values before ultimately using resolve_to_framebuffer to average all the values to get the final color value for a particular pixel. We modified set_sample_rate and set_framebuffer_target to dynamically update the sample buffer size, and clear the buffer as well. 
+Since each pixel is sampled “sample rate” times, the sample buffer would have to scale in size by the sample rate. In order to actually sample each pixel multiple times, we sampled in a grid (N x N, where N is the sqrt(sample rate)), where each step along the xy axis within the pixel was partially defined by (1/sqrt(sample rate)) and other numbers. Each subsampled was processed like any other regular sample using the point in triangle tests. Indexing into the sample buffer was changed as well and where every change in x or y coordinate skipped over “sample rate” memory slots to store all the subsamples. 
+One challenge we ran into was we initially thought the averaging of subsamples could be done as the triangle was being rasterized; however, we realized that we needed to wait until everything had been rasterized since some triangles could be drawn right next to each other and the averaging would average their colors. We noticed fill_pixel also had to be changed to set all the subsamples related to a pixel to the same color. 
+Supersampling is useful because it acts like a low-pass filter by averaging over pixel values to reduce high frequency changes. This helps to smooth over edges and reduce artifacts and jaggies by removing some of the frequencies above the Nyquist rate. We noticed the edges of triangles, especially the thin ones, seemed a lot more natural due to the averaging.</p>
+	
+<h3>Task 3 (10 pts)</h3>
+<p>(Written in haiku form):<br>This is handstand man.<br>Handstand man is very red.<br>Please give us credit.<br>
+Jokes aside, to do this, we applied a translation to move the head below the torso, and also invert the relative positions of the arms and the legs. I also increased the scale of the upper arm so that the arms could reach the ground. Lastly, I rotated the arms 45 degrees and -45 degrees to mimic the bend necessary for a handstand.</p>
+
+<h3>Task 4 (10 pts)</h3>
+	
+<p>Barycentric coordinates allow us to define the location of a point relative to a simplex (in this project, we use triangles) using alpha, beta, and gamma values. These three values represent the weights of each of the vertices in order to get the point in the triangle! As a visual, I’ve created an svg file colorTriangle that visualizes this. The top vertex is blue, the bottom left is red, and the bottom right is green. Colors within the triangle are assigned based off of its barycentric coordinates, so for instance, if alpha represents the red vertex, beta for blue, and gamma for green, a point close to the green vertex would have a high gamma value, and lower beta and alpha values, which should ultimately all sum up to 1.</p>
+	
+<h3>Task 5 (15 pts)</h3>
+	
+<p>Pixel sampling is a method of sampling where we determine a particular color for a pixel by some method (nearest pixel sampling or bilinear interpolation) based on the values in uv space - in this project, we used it to map a texture onto triangles. This was used to implement texture mapping inside rasterize_textured_triangle, where we still supersample using the sample rate, but first convert the x, y coordinates into barycentric coordinates, then to the corresponding uv coordinates. The uv coordinates are used for texture mapping so that we can map the 2D texture onto pixels on the screen. There are two different pixel sampling methods. Nearest finds the color for a pixel based on the closest texel value to the translated coordinates in texture space, while bilinear uses a weighted average based on its distance to the four closest texels.
+Once we had our uv coordinates, we translated the uv coordinates into texture space by multiplying the x coordinate by the mipmap’s width - 1, and the y coordinate by the mipmap’s height - 1. This was done in the 0th layer of the mipmap, given that the 0th layer has the fullest resolution texture. Then, for nearest pixel sampling, we can thus get the closest pixel by calling get_texel and rounding the resulting scaled tx and ty coordinates.
+We implemented bilinear interpolation by using floor() and ceil() to get the coordinates of the nearest 4 texels. We then interpolated between all four texels and used two helper linear interpolations as described in lecture using the left two points, then the right two points (horizontal), and finally vertical linear interpolation to yield our result.
+Before looking at a tangible example, we worked with a relatively high resolution image to demonstrate that nearest pixel sampling is sometimes insufficient at capturing all the details that bilinear interpolation would (shortly put, we’d see the largest differences in a very high resolution image). Also, when there’s a lot of high frequency changes, bilinear does a better job since it’s able to incorporate more information for texel values from nearby values instead of just using the closest. However, bilinear interpolation both requires more memory and takes more time to compute compared to nearest pixel.
+Below are two photos with a sample rate of 1. The first uses nearest pixel sampling, and there is still some amount of aliasing since it’s only uses the nearest pixel (we’ve zoomed in on one of the vertical lines on the left hand side to demonstrate that there are some gaps in the vertical line). On the other hand, bilinear interpolation looks smoother since it averages the pixel values, and so the vertical lines show up more clearly when zoomed in. Below are the same images, but with a sample rate of 16.
+
+Bilinear interpolation:
+
+
+Nearest pixel: </p>
+	
+<h3>Task 6 (25 pts)</h3>
+<p> Previously, all our sampling techniques were applied on the 0th level of the mipmap. Level sampling refers to the different levels of the mipmap, which gradually decreases in resolution as we traverse through the levels. The three ways of implementing level sampling were either to always default to the 0th level of the mipmap (highest resolution), taking the nearest mipmap layer, or using linear interpolation between the two nearest layers, weighing the layer that we’re closer to. This notion of the nearest layer is implemented in get_level using the following formula:
+
+
+Earlier, when computing the uv coordinates, we also computed the barycentric (and corresponding uv coordinates) of the x + 1, y coordinate (or x - 1, y in the case that x + 1 was outside of the triangle), as well as the x, y + 1 coordinate (or x, y - 1 in the case that y + 1 was outside of the triangle). This allowed us to calculated dx/uv and dy/uv so we could use the difference vector, scale it and take the norm, and finally calculate the layer by taking log_2 of the maximum between the two.
+
+The trend when selecting a sampling method is that antialiasing comes at the cost of efficiency and memory usage. </p>
