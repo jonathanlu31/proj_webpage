@@ -14,36 +14,42 @@
       <div class="images">
         <div class="bez_container">
           <p>Bezier curve, no steps</p>
-          <img src="imgs/bez_0_step.png" alt="" class="bez" />
+          <img src="imgs/bez_0_step.png" alt="" class="img" />
         </div>
         <div class="bez_container">
           <p>Bezier curve, one step</p>
-          <img src="imgs/bez_1_step.png" alt="" class="bez" />
+          <img src="imgs/bez_1_step.png" alt="" class="img" />
         </div>
         <div class="bez_container">
           <p>Bezier curve, two steps</p>
-          <img src="imgs/bez_2_step.png" alt="" class="bez" />
+          <img src="imgs/bez_2_step.png" alt="" class="img" />
         </div>
         <div class="bez_container">
           <p>Bezier curve, three steps</p>
-          <img src="imgs/bez_3_step.png" alt="" class="bez" />
+          <img src="imgs/bez_3_step.png" alt="" class="img" />
         </div>
         <div class="bez_container">
           <p>Bezier curve, four steps</p>
-          <img src="imgs/bez_4_step.png" alt="" class="bez" />
+          <img src="imgs/bez_4_step.png" alt="" class="img" />
         </div>
         <div class="bez_container">
           <p>Bezier curve, five steps</p>
-          <img src="imgs/bez_all_step.png" alt="" class="bez" />
+          <img src="imgs/bez_all_step.png" alt="" class="img" />
         </div>
       </div>
       <div>
         <p>Bezier curve with shifted control points and different t value</p>
-        <img src="imgs/bez_diff.png" alt="" class="bez" />
+        <img src="imgs/bez_diff.png" alt="" class="img" />
       </div>
     </section->
     <section->
       <h2>Part 2</h2>
+      <p>
+        To use de Casteljau's algorithm for Bezier surfaces, we now need a grid of control points, where each point is in 3D. Since de Casteljau's works with one array of control points at a time, we divide the grid into separate rows and run each
+        row through the algorithm. This results in one point per row on the "moving" Bezier curve, which can then be passed again into the algorithm to give a point on the actual surface. In other words, we only work with one dimension of the domain
+        of the surface at a time, and each dimension has its own interpolating value, u and v. By moving between different values for (u,v) between (0, 0) and (1, 1), we can trace out the full Bezier surface given the control points.
+      </p>
+      <img src="imgs/teapot_bez.png" alt="" class="img" />
     </section->
     <section->
       <h2>Part 3</h2>
