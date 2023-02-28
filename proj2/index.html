@@ -1,7 +1,61 @@
 <html>
-	<head>
-	</head>
-	<body>
-		Project 2 here
-	</body>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Project 2: Mesh Edit</h1>
+    <section->
+      <h2>Part 1</h2>
+      <p>
+        de Casteljau's algorithm is a way to evaluate Bezier curves using specific control points. Given a set of control n+1 points, p_0 to p_n, the algorithm computes linear interpolation between each pair of points p_i and p_{i+1} for i from 0 to
+        n - 1 at a particular value t. This generates a new set of n control points, and the algorithm recursively performs said interpolation until it reachs a single value. This value is a point that lies on the curve, and by evaluating for all t
+        from 0 to 1, those points will trace out the full curve.
+      </p>
+      <div class="images">
+        <div class="bez_container">
+          <p>Bezier curve, no steps</p>
+          <img src="imgs/bez_0_step.png" alt="" class="bez" />
+        </div>
+        <div class="bez_container">
+          <p>Bezier curve, one step</p>
+          <img src="imgs/bez_1_step.png" alt="" class="bez" />
+        </div>
+        <div class="bez_container">
+          <p>Bezier curve, two steps</p>
+          <img src="imgs/bez_2_step.png" alt="" class="bez" />
+        </div>
+        <div class="bez_container">
+          <p>Bezier curve, three steps</p>
+          <img src="imgs/bez_3_step.png" alt="" class="bez" />
+        </div>
+        <div class="bez_container">
+          <p>Bezier curve, four steps</p>
+          <img src="imgs/bez_4_step.png" alt="" class="bez" />
+        </div>
+        <div class="bez_container">
+          <p>Bezier curve, five steps</p>
+          <img src="imgs/bez_all_step.png" alt="" class="bez" />
+        </div>
+      </div>
+      <div>
+        <p>Bezier curve with shifted control points and different t value</p>
+        <img src="imgs/bez_diff.png" alt="" class="bez" />
+      </div>
+    </section->
+    <section->
+      <h2>Part 2</h2>
+    </section->
+    <section->
+      <h2>Part 3</h2>
+    </section->
+    <section->
+      <h2>Part 4</h2>
+    </section->
+    <section->
+      <h2>Part 5</h2>
+    </section->
+    <section->
+      <h2>Part 6</h2>
+    </section->
+  </body>
 </html>
