@@ -5,6 +5,14 @@
   <body>
     <h1>Project 2: Mesh Edit</h1>
     <section->
+      <h2>Overview</h2>
+      <p>
+        In this project, we first implemented de Casteljau's algorithm on 2-D vectors, then iteratively expanded on this by implementing it on 3-D Vectors to support Bezier curves, then Bezier surfaces. We applied this on triangles to render a teapot.
+        The second part of the project focused on the usage of triangular meshes. Using area-weighted vertex normals, we implemented Phong shading to better blend colors between triangles in our mesh.
+        Lastly, we implemented two utility methods (edge flipping and edge splitting) to finally support upsampling via loop subdivision, and explored how to mitigate issues of curvature of sharp corners and edges by pre-processing edge splits.
+      </p>      
+    </section->
+    <section->
       <h2>Part 1</h2>
       <p>
         de Casteljau's algorithm is a way to evaluate Bezier curves using specific control points. Given a set of control n+1 points, p_0 to p_n, the algorithm computes linear interpolation between each pair of points p_i and p_{i+1} for i from 0 to
@@ -61,16 +69,72 @@
       <p>
         To implement edge flips, we drew the before and after of an edge flip on two triangles of the mesh and labelled all the components involved i.e. edges, halfedges, vertices, and faces. Then, we just wrote down how each component was connected
         to each other and added a boundary check for the two faces. We didn't really have any debugging issues or implementation tricks, but we mostly focused on having a clear and consistent naming system, so it would be easy to see which objects
-        were connected. Fortunately, we didn't run into any bugs.
+        were connected. Additionally, we used the renderer to visually verify that all the fields for each half edge, face, vertex, and edge were updated properly. Fortunately, we didn't run into any bugs.
       </p>
       <img src="imgs/teapot_flat.png" alt="" class="img" />
       <img src="imgs/edge_flips.png" alt="" class="img" />
     </section->
     <section->
       <h2>Part 5</h2>
+      
     </section->
     <section->
       <h2>Part 6</h2>
+      <p>
+        We implemented loop subdivision by separating the process into three parts. 
+        The first part calculated the new position of all existing vertices by applying a weighted sum of all neighboring vertices and storing that in that particular vertex' neighbors.
+        We also calculated the position of all newly created vertices by iterating through all the edges in the mesh, and traversing the half edges associated with each edge to yield the 2 adjacent vertices
+        to the newly created point, as well as the vertices directly above and below the newly created vertex. Since the vertex wasn't created yet, we stored the position inside of the corresponding edge.
+        
+        With the positions of all new and updated vertices determined, we moved to subdivide the original mesh by first iterating through all the edges and splitting each one. In order to avoid an infinite loop,
+        we modified our splitEdge method to mark any newly created edges with a boolean flag isNew. After we were done splitting each edge, we went on to flip all edges that connected an existing vertex and a newly created vertex.
+        Since the splitEdge method creates 3 new edges but only 2 of them meet this criteria, we modified the edge struct to add a newConnect field that acted as a flag, so that the one edge that overlapped with an existing
+        edge would not be flipped. 
+        
+        Lastly, we updated all of the vertex positions and reset all of the flags (isNew, newConnect) to support further upsampling.
+        
+        Upsampling not only makes the size of each triangle smaller (as they're separated into 4 separate triangles), but on a higher level, they smooth out any sudden changes in the orientation of the trianglular mesh.
+        In the below image, this smoothing is desired, as we maintain the detail of the cow while making the image smoother.
+      </p>
+      <div class="images">
+        <div class="bez_container">
+          <p>Cow, no upsampling</p>
+          <img src="imgs/cow1.png" alt="" class="img" />
+        </div>
+        <div class="bez_container">
+          <p>A cuter cow, one iteration of upsampling</p>
+          <img src="imgs/cow2.png" alt="" class="img" />
+        </div>
+        <div class="bez_container">
+          <p>A very cute smooth cow, two iterations of upsampling</p>
+          <img src="imgs/cow3.png" alt="" class="img" />
+        </div>
+      </div>
+      <p>
+        However, such smoothing is not desired when upsampling something like a cube. Below, we can notice how the vertices of the cube become smoothed out, rendering the cube into a polygon not very reminiscent of a cube.
+      </p>
+      <div class="images">
+        <div class="bez_container">
+          <p>Cube, no upsampling</p>
+          <img src="imgs/Task6_1.png" alt="" class="img" />
+        </div>
+        <div class="bez_container">
+          <p>Cube, one iteration of upsampling</p>
+          <img src="imgs/Task6_2.png" alt="" class="img" />
+        </div>
+        <div class="bez_container">
+          <p>Cube, two iterations of upsampling</p>
+          <img src="imgs/Task6_3.png" alt="" class="img" />
+        </div>
+        <div class="bez_container">
+          <p>Cube, three iterations of upsampling</p>
+          <img src="imgs/Task6_4.png" alt="" class="img" />
+        </div>
+      </div>
+      
+        
+        
+        
     </section->
   </body>
 </html>
