@@ -7,10 +7,11 @@
     <section->
       <h2>Overview</h2>
       <p>
-        In this project, we first implemented de Casteljau's algorithm on 2-D vectors, then iteratively expanded on this by implementing it on 3-D Vectors to support Bezier curves, then Bezier surfaces. We applied this on triangles to render a teapot.
-        The second part of the project focused on the usage of triangular meshes. Using area-weighted vertex normals, we implemented Phong shading to better blend colors between triangles in our mesh.
-        Lastly, we implemented two utility methods (edge flipping and edge splitting) to finally support upsampling via loop subdivision, and explored how to mitigate issues of curvature of sharp corners and edges by pre-processing edge splits.
-      </p>      
+        In this project, we first implemented de Casteljau's algorithm on 2-D vectors, then iteratively expanded on this by implementing it on 3-D Vectors to support Bezier curves, then Bezier surfaces. We applied this on triangles to render a
+        teapot. Since Bezier surface rendering can be diffcult and techniques like ray tracing are harder to implement, we worked on triangular meshes for the second part of the project. Using area-weighted vertex normals, we implemented Phong
+        shading to better blend colors between triangles in our mesh. Lastly, we implemented two utility methods (edge flipping and edge splitting) to finally support upsampling via loop subdivision and explored how to mitigate issues of curvature of
+        sharp corners and edges by pre-processing edge splits.
+      </p>
     </section->
     <section->
       <h2>Part 1</h2>
@@ -55,23 +56,27 @@
       <p>
         To use de Casteljau's algorithm for Bezier surfaces, we now need a grid of control points, where each point is in 3D. Since de Casteljau's works with one array of control points at a time, we divide the grid into separate rows and run each
         row through the algorithm. This results in one point per row on the "moving" Bezier curve, which can then be passed again into the algorithm to give a point on the actual surface. In other words, we only work with one dimension of the domain
-        of the surface at a time, and each dimension has its own interpolating value, u and v. By moving between different values for (u,v) between (0, 0) and (1, 1), we can trace out the full Bezier surface given the control points.
+        of the surface at a time, and each dimension has its own interpolating value, u and v. By moving between different values for (u,v) between (0, 0) and (1, 1), we can trace out the full Bezier surface given the control points. In our
+        implementation, we specifically called evaluate1D on each row to get the points on the moving curve, and then called evaluate1D again on the resulting points to get the final point.
       </p>
       <img src="imgs/teapot_bez.png" alt="" class="img" />
     </section->
     <section->
       <h2>Part 3</h2>
       <p>
-        In this task, we implemented area-weighted vertex normals by first traversing each face incident to the given vertex. In order to calculate the area of each face, we used the following formula: [JONALD INSERT HERE]. 
-        Once we had the area of each face, we then attained the unit face normal and multiplied the normal by the area of the face and add these to the vertexNormal, and finally we normalize by dividing by the sum of all the areas of faces incident to the vertex.
-      <p>
-        Rendering of a teapot without Phong shading.
+        In this task, we implemented area-weighted vertex normals by first traversing each face incident to the given vertex using normal mesh traversal techniques with halfedges. In order to calculate the area of each face, we used the following
+        formula and used the positions of the face vertices for A, B, and C:
       </p>
+      <img src="imgs/tri_area.png" alt="" class="img" />
+      <p>
+        Once we had the area of each face, we then attained the unit face normal via the built in method involving a cross product and multiplied the normal by the area of the face. Finally, we normalized by dividing by the sum of all the areas of
+        faces incident to the vertex.
+      </p>
+
+      <p>Rendering of a teapot without Phong shading.</p>
       <img src="imgs/teapot_flat.png" alt="" class="img" />
-      <p>
-        Rendering of a teapot with Phong shading.
-      </p>
-      <img src="imgs/teapot_phong.png" alt="" class="img" />
+      <p>Rendering of a teapot with Phong shading.</p>
+      <img src="imgs/teapot_shade.png" alt="" class="img" />
     </section->
     <section->
       <h2>Part 4</h2>
@@ -85,16 +90,15 @@
     </section->
     <section->
       <h2>Part 5</h2>
-      <p>
-         Similar to part 4, we guided our implementation by first assigning all existing vertices, halfedges, faces, and edges to variables so we could reassign pointers as needed, using the below image as reference.
-      </p>
+      <p>Similar to part 4, we guided our implementation by first assigning all existing vertices, halfedges, faces, and edges to variables so we could reassign pointers as needed, using the below image as reference.</p>
       <img src="imgs/SplitDiagram.PNG" alt="" class="img" />
       <p>
-        After performing a boundary check to ensure that the halfedge of the edge we're splitting on is within bounds, we then initialized all of the new structs that come with splitting an edge.
-        This includes three new edges, two of which are perpendicular to the input edge (a-m and m-d), and a third edge (m-b
-        0that is parallel and an extension to the original edge, two new faces, 6 new halfedges, and one new vertex, which we simply computed by taking the positions of b and c and dividing by 2.
-        We then partitioned our code into four segments corresponding to each triangle (top-left, top-right, bottom-left, and bottom-right), and manipulated all necessary pointers to ensure that 
-        all structs were pointing at a valid halfedge, and all halfedges had valid references.
+        After performing a boundary check to ensure that the halfedge of the edge we're splitting on is within bounds, we then initialized all of the new structs that come with splitting an edge. This includes three new edges, two of which are
+        perpendicular to the input edge (a-m and m-d), and a third edge (m-b) that is parallel and an extension to the original edge, two new faces, 6 new halfedges, and one new vertex, which we simply computed by taking the positions of b and c and
+        dividing by 2. We then partitioned our code into four segments corresponding to each triangle (top-left, top-right, bottom-left, and bottom-right), and manipulated all necessary pointers to ensure that all structs were pointing at a valid
+        halfedge, and all halfedges had valid references. We used a consistent naming system to make sure it was easier to debug, but since there were so many items to manipulate and assign, we often lost track and misassigned pointers. It didn't
+        show up until the very end when performing loop subdivision, when we noticed one of the vertex positions wasn't being updated properly. To debug, we simply ran through the whole reassignment process and realized we did a double assignment for
+        one of the vertices.
       </p>
       <div class="images">
         <div class="bez_container">
@@ -114,25 +118,23 @@
           <img src="imgs/cube_3.PNG" alt="" class="img" />
         </div>
       </div>
-      
     </section->
     <section->
       <h2>Part 6</h2>
       <p>
-        We implemented loop subdivision by separating the process into three parts. 
-        The first part calculated the new position of all existing vertices by applying a weighted sum of all neighboring vertices and storing that in that particular vertex' neighbors.
-        We also calculated the position of all newly created vertices by iterating through all the edges in the mesh, and traversing the half edges associated with each edge to yield the 2 adjacent vertices
-        to the newly created point, as well as the vertices directly above and below the newly created vertex. Since the vertex wasn't created yet, we stored the position inside of the corresponding edge.
-        
-        With the positions of all new and updated vertices determined, we moved to subdivide the original mesh by first iterating through all the edges and splitting each one. In order to avoid an infinite loop,
-        we modified our splitEdge method to mark any newly created edges with a boolean flag isNew. After we were done splitting each edge, we went on to flip all edges that connected an existing vertex and a newly created vertex.
-        Since the splitEdge method creates 3 new edges but only 2 of them meet this criteria, we modified the edge struct to add a newConnect field that acted as a flag, so that the one edge that overlapped with an existing
-        edge would not be flipped. 
-        
-        Lastly, we updated all of the vertex positions and reset all of the flags (isNew, newConnect) to support further upsampling.
-        
-        Upsampling not only makes the size of each triangle smaller (as they're separated into 4 separate triangles), but on a higher level, they smooth out any sudden changes in the orientation of the trianglular mesh.
-        In the below image, this smoothing is desired, as we maintain the detail of the cow while making the image smoother.
+        We implemented loop subdivision by separating the process into three parts. The first part calculated the new position of all existing vertices by applying a weighted sum of all neighboring vertices and storing that in that particular vertex'
+        neighbors. We also calculated the position of all newly created vertices by iterating through all the edges in the mesh, and traversing the half edges associated with each edge to yield the 2 adjacent vertices to the newly created point, as
+        well as the vertices directly above and below the newly created vertex. Since the vertex wasn't created yet, we stored the position inside of the corresponding edge.
+      </p>
+      <p>
+        With the positions of all new and updated vertices determined, we moved to subdivide the original mesh by first iterating through all the edges and splitting each one. In order to avoid an infinite loop, we modified our splitEdge method to
+        mark any newly created edges with a boolean flag isNew. After we were done splitting each edge, we went on to flip all edges that connected an existing vertex and a newly created vertex. However, we didn't want to flip the edge that
+        represented the new half of the edge that was split. We only wanted to flip the new edges that ran across the triangle, intersecting the edge that was split. Since the splitEdge method creates 3 new edges but only 2 of them meet this
+        criteria, we modified the edge struct to add a newConnect field that acted as a flag, so that the one edge that overlapped with an existing edge would not be flipped.
+      </p>
+      <p>
+        Lastly, we updated all of the vertex positions and reset all of the flags (isNew, newConnect) to support further upsampling. Upsampling not only makes the size of each triangle smaller (as they're separated into 4 separate triangles), but on
+        a higher level, they smooth out any sudden changes in the orientation of the trianglular mesh. In the below image, this smoothing is desired, as we maintain the detail of the cow while making the image smoother.
       </p>
       <div class="images">
         <div class="bez_container">
@@ -149,11 +151,9 @@
         </div>
       </div>
       <p>
-        However, such smoothing is not desired when upsampling something like a cube. Below, we can notice how the vertices of the cube become smoothed out, rendering the cube into a polygon not very reminiscent of a cube.
-        This can be mitigated by pre-splitting certain edges, specifically the ones nearest to the vertices so that they are as detailed as possible.
-        
-        We can also notice that upsampling not only smooths out the points, but there is also some asymmetry.
-        This is especially apparent when looking at the cube front on, where the points are askew (photo 5).
+        However, such smoothing can be undesirable when upsampling something like a cube. Below, we can notice how the vertices of the cube become smoothed out, rendering the cube into a shape not very reminiscent of a cube. This can be mitigated by
+        pre-splitting certain edges, specifically the ones nearest to the vertices so that they are as detailed as possible. We can also notice that upsampling not only smooths out the points, but there is also some asymmetry. This is especially
+        apparent when looking at the cube front on, where the points are askew (photo 5).
       </p>
       <div class="images">
         <div class="bez_container">
@@ -178,19 +178,16 @@
         </div>
       </div>
       <p>
-        To fix this issue of asymmetry, we pre-process the cube by splitting among the diagonals on each face of the cube (not face of the triangle). This yields no issues of asymmetry.
-        This works because of a recognition of how this asymmetry came to be in the first place. Because there is only one diagonal along each face of the cube, upsampling repeatedly and splitting among
-        that diagonal would create more triangles at the endpoints of the diagonal compared to the other two corners of the face. This means that the upsampling will yield asymmetry, since some corners have more triangles than others.
-        A photo of the cube after making 6 splits (one for each diagonal on each face of the cube is below). 
+        To fix this issue of asymmetry, we pre-process the cube by splitting among the diagonals on each face of the cube (not face of the triangle). This yields no issues of asymmetry. This works because of a recognition of how this asymmetry came
+        to be in the first place. Because there is only one diagonal along each face of the cube, upsampling repeatedly and splitting among that diagonal would create more triangles at the endpoints of the diagonal compared to the other two corners
+        of the face. This means that the upsampling will yield asymmetry, since some corners have more triangles than others. A photo of the cube after making 6 splits (one for each diagonal on each face of the cube is below).
       </p>
       <div class="images">
         <div class="bez_container">
-          <p>Cube with preprocess by splitting among the diagonal, upsampled three times. </p>
+          <p>Cube with preprocess by splitting among the diagonal, upsampled three times.</p>
           <img src="imgs/cube_preprocess.PNG" alt="" class="img" />
         </div>
       </div>
-      
-      
     </section->
   </body>
 </html>
