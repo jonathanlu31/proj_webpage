@@ -63,7 +63,7 @@
       <h2>Part 3</h2>
       <p>
         In this task, we implemented area-weighted vertex normals by first traversing each face incident to the given vertex. In order to calculate the area of each face, we used the following formula: [JONALD INSERT HERE]. 
-        Once we had the area of each face, we then attained the unit face normal and the normal by the area of the face and add these to the vertexNormal, and finally we normalize by dividing by the sum of all the areas of faces incident to the vertex.
+        Once we had the area of each face, we then attained the unit face normal and multiplied the normal by the area of the face and add these to the vertexNormal, and finally we normalize by dividing by the sum of all the areas of faces incident to the vertex.
       <p>
         Rendering of a teapot without Phong shading.
       </p>
@@ -85,6 +85,17 @@
     </section->
     <section->
       <h2>Part 5</h2>
+      <p>
+         Similar to part 4, we guided our implementation by first assigning all existing vertices, halfedges, faces, and edges to variables so we could reassign pointers as needed, using the below image as reference.
+      </p>
+      <img src="imgs/SplitDiagram.PNG" alt="" class="img" />
+      <p>
+        After performing a boundary check to ensure that the halfedge of the edge we're splitting on is within bounds, we then initialized all of the new structs that come with splitting an edge.
+        This includes three new edges, two of which are perpendicular to the input edge (a-m and m-d), and a third edge (m-b
+        0that is parallel and an extension to the original edge, two new faces, 6 new halfedges, and one new vertex, which we simply computed by taking the positions of b and c and dividing by 2.
+        We then partitioned our code into four segments corresponding to each triangle (top-left, top-right, bottom-left, and bottom-right), and manipulated all necessary pointers to ensure that 
+        all structs were pointing at a valid halfedge, and all halfedges had valid references.
+      </p>
       
     </section->
     <section->
