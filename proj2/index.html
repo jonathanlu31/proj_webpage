@@ -150,6 +150,10 @@
       </div>
       <p>
         However, such smoothing is not desired when upsampling something like a cube. Below, we can notice how the vertices of the cube become smoothed out, rendering the cube into a polygon not very reminiscent of a cube.
+        This can be mitigated by pre-splitting certain edges, specifically the ones nearest to the vertices so that they are as detailed as possible.
+        
+        We can also notice that upsampling not only smooths out the points, but there is also some asymmetry.
+        This is especially apparent when looking at the cube front on, where the points are askew (photo 5).
       </p>
       <div class="images">
         <div class="bez_container">
@@ -168,11 +172,25 @@
           <p>Cube, three iterations of upsampling</p>
           <img src="imgs/Task6_4.PNG" alt="" class="img" />
         </div>
+        <div class="bez_container">
+          <p>Cube, three iterations of upsampling and front view, showing how asymmetric the cube is when upsampling</p>
+          <img src="imgs/cube_noprocess.PNG" alt="" class="img" />
+        </div>
+      </div>
+      <p>
+        To fix this issue of asymmetry, we pre-process the cube by splitting among the diagonals on each face of the cube (not face of the triangle). This yields no issues of asymmetry.
+        This works because of a recognition of how this asymmetry came to be in the first place. Because there is only one diagonal along each face of the cube, upsampling repeatedly and splitting among
+        that diagonal would create more triangles at the endpoints of the diagonal compared to the other two corners of the face. This means that the upsampling will yield asymmetry, since some corners have more triangles than others.
+        A photo of the cube after making 6 splits (one for each diagonal on each face of the cube is below). 
+      </p>
+      <div class="images">
+        <div class="bez_container">
+          <p>Cube with preprocess by splitting among the diagonal, upsampled three times. </p>
+          <img src="imgs/cube_preprocess.PNG" alt="" class="img" />
+        </div>
       </div>
       
-        
-        
-        
+      
     </section->
   </body>
 </html>
