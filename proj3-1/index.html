@@ -1,7 +1,39 @@
 <html>
-	<head>
-	</head>
-	<body>
-		Project 3-1 here
-	</body>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Project 2: Mesh Edit</h1>
+    <h3>Jedi Tsang and Jonathan Lu</h3>
+    <a href="https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html">https://jonathanlu31.github.io/proj_webpage/proj2/index.html</a>
+    <section->
+      <h2>Overview</h2>
+      <div>
+        <h3>Part 1: Ray Generation and Scene Intersection</h3>
+        <p>
+          In order to generate rays into the scene, we first need to figure out how to map from screen coordinates to sensor/image coordinates in the 3D world. To do that, we imagine the screen as if it were centered around the point (0, 0, -1) and
+          normalized such that the height was equal to the vertical field of view and the width was the horizontal field of view. Then, we have a unique mapping from pixel coordinates to sensor coordinates and can generate the ray as having origin
+          (0, 0, 0) and direction d = sensor coordinates. We also want to limit the depth of intersection so we set a max and min distance.
+        </p>
+        <p>
+          Now that we know how to generate a ray for a particular screen coordinate, we determine radiance for a pixel by sampling rays uniformly within the pixel area and then averaging those samples. Since the pixel area is 1, then the Monte Carlo
+          estimate is just an average over the samples.
+        </p>
+        <p>
+          To determine the radiance from a ray, we need to determine which objects it intersects. For intersections with triangles, the general idea was to determine if the ray intersected the plane of the triangle and then check if the intersection
+          point was within the triangle. However, this was much more easily done using the Moller Trumbore algorithm from class that determined the barycentric coordinates as well as the t value of intersection. If all the barycentric coordinates
+          were greater than zero and summed to one and if the time of intersection was within the max and min for the ray, then it was a valid intersection.
+        </p>
+        <p>For intersections with spheres, we again used the formulas derived in the lecture slides and simply verified that the discriminant was positive and that the times outputted were within bounds.</p>
+        <p>
+          Once primitive intersection was determined, we updated the intersection information to record the surface normal, the bsdf, the t value, and the primitive, and we updated the ray max_t so that, in the future, it would only test for
+          intersections in front of this one.
+        </p>
+        <p>We ran into challenges for this part mainly when converting screen coordinates to sensor coordinates since calculating the proper offsets and normalizing the resulting direction vector was easy to mess up or forget.</p>
+        <hr />
+        <h4>Normal shading examples</h4>
+        <div class="images"><img src="imgs/CBspheres.png" class="img" alt="" /><img src="imgs/cow.png" class="img" alt="" /><img src="imgs/teapot_normal.png" class="img" alt="" /></div>
+      </div>
+    </section->
+  </body>
 </html>

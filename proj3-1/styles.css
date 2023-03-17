@@ -1,0 +1,18 @@
+.images {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.img {
+  width: auto;
+  height: 18rem;
+}
+
+.bez_container {
+  margin-left: 2rem;
+}
+
+body {
+  margin: 0 20%;
+}
