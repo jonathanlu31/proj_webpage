@@ -3,37 +3,105 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Project 2: Mesh Edit</h1>
+    <h1>Project 3-1: Pathtracer</h1>
     <h3>Jedi Tsang and Jonathan Lu</h3>
-    <a href="https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html">https://jonathanlu31.github.io/proj_webpage/proj2/index.html</a>
+    <a href="https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html">https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html</a>
     <section->
       <h2>Overview</h2>
-      <div>
-        <h3>Part 1: Ray Generation and Scene Intersection</h3>
-        <p>
-          In order to generate rays into the scene, we first need to figure out how to map from screen coordinates to sensor/image coordinates in the 3D world. To do that, we imagine the screen as if it were centered around the point (0, 0, -1) and
-          normalized such that the height was equal to the vertical field of view and the width was the horizontal field of view. Then, we have a unique mapping from pixel coordinates to sensor coordinates and can generate the ray as having origin
-          (0, 0, 0) and direction d = sensor coordinates. We also want to limit the depth of intersection so we set a max and min distance.
-        </p>
-        <p>
-          Now that we know how to generate a ray for a particular screen coordinate, we determine radiance for a pixel by sampling rays uniformly within the pixel area and then averaging those samples. Since the pixel area is 1, then the Monte Carlo
-          estimate is just an average over the samples.
-        </p>
-        <p>
-          To determine the radiance from a ray, we need to determine which objects it intersects. For intersections with triangles, the general idea was to determine if the ray intersected the plane of the triangle and then check if the intersection
-          point was within the triangle. However, this was much more easily done using the Moller Trumbore algorithm from class that determined the barycentric coordinates as well as the t value of intersection. If all the barycentric coordinates
-          were greater than zero and summed to one and if the time of intersection was within the max and min for the ray, then it was a valid intersection.
-        </p>
-        <p>For intersections with spheres, we again used the formulas derived in the lecture slides and simply verified that the discriminant was positive and that the times outputted were within bounds.</p>
-        <p>
-          Once primitive intersection was determined, we updated the intersection information to record the surface normal, the bsdf, the t value, and the primitive, and we updated the ray max_t so that, in the future, it would only test for
-          intersections in front of this one.
-        </p>
-        <p>We ran into challenges for this part mainly when converting screen coordinates to sensor coordinates since calculating the proper offsets and normalizing the resulting direction vector was easy to mess up or forget.</p>
-        <hr />
+    </section->
+    <section->
+      <h3>Part 1: Ray Generation and Scene Intersection</h3>
+      <p>
+        In order to generate rays into the scene, we first need to figure out how to map from screen coordinates to sensor/image coordinates in the 3D world. To do that, we imagine the screen as if it were centered around the point (0, 0, -1) and
+        normalized such that the height was equal to the vertical field of view and the width was the horizontal field of view. Then, we have a unique mapping from pixel coordinates to sensor coordinates and can generate the ray as having origin (0,
+        0, 0) and direction d = sensor coordinates. We also want to limit the depth of intersection so we set a max and min distance.
+      </p>
+      <p>
+        Now that we know how to generate a ray for a particular screen coordinate, we determine radiance for a pixel by sampling rays uniformly within the pixel area and then averaging those samples. Since the pixel area is 1, then the Monte Carlo
+        estimate is just an average over the samples.
+      </p>
+      <p>
+        To determine the radiance from a ray, we need to determine which objects it intersects. For intersections with triangles, the general idea was to determine if the ray intersected the plane of the triangle and then check if the intersection
+        point was within the triangle. However, this was much more easily done using the Moller Trumbore algorithm from class that determined the barycentric coordinates as well as the t value of intersection. If all the barycentric coordinates were
+        greater than zero and summed to one and if the time of intersection was within the max and min for the ray, then it was a valid intersection.
+      </p>
+      <p>For intersections with spheres, we again used the formulas derived in the lecture slides and simply verified that the discriminant was positive and that the times outputted were within bounds.</p>
+      <p>
+        Once primitive intersection was determined, we updated the intersection information to record the surface normal, the bsdf, the t value, and the primitive, and we updated the ray max_t so that, in the future, it would only test for
+        intersections in front of this one.
+      </p>
+      <p>We ran into challenges for this part mainly when converting screen coordinates to sensor coordinates since calculating the proper offsets and normalizing the resulting direction vector was easy to mess up or forget.</p>
+      <hr />
+      <div class="flex-center">
         <h4>Normal shading examples</h4>
-        <div class="images"><img src="imgs/CBspheres.png" class="img" alt="" /><img src="imgs/cow.png" class="img" alt="" /><img src="imgs/teapot_normal.png" class="img" alt="" /></div>
+        <div class="images">
+          <img src="imgs/CBspheres.png" class="img" alt="" />
+          <img src="imgs/cow.png" class="img" alt="" />
+          <img src="imgs/teapot_normal.png" class="img" alt="" />
+        </div>
       </div>
     </section->
+    <section>
+      <h2>Part 3: Direct Illumination</h2>
+      <p>
+        To handle direct lighting, we work with rays that have already intersected with an object in the scene. Thus, we know what w_out is, i.e. the ray from the intersection point out to the camera, and now we need to figure out what the ray of
+        light is coming in to the intersection point. For uniform hemisphere sampling, we simply sample an outgoing ray uniformly in the hemisphere above the intersection point. Since the outgoing ray direction has an object-coordinate
+        representation, we have to apply an object to world transformation to get the ray direction in world coordinates. We also set a non-zero minimum time to ensure the ray doesn't instantly collide with the original intersection point. Once this
+        ray has been constructed, we shoot it out into the scene again and see if it has any intersections. If there was, then we get the emission from that point (only contributes if the object intersected was emissive or a light source), multiply
+        by the BSDF for the original intersection and the cosine of the angle formed by the incoming ray and surface normal to get the final output irradiance sample. Finally, we take multiple samples based on a program argument, divide samples by
+        their pdf (which is simply 1/2pi), and average them.
+      </p>
+      <p>
+        For importance sampling of the lights, we follow a similar procedure; however, to determine the direction of the outgoing light ray, we sample a point on the light instead of a random direction on a hemisphere. Since we are doing direct
+        lighting, any ray that doesn't hit a light or an emissive light souce won't contribute to the output irradiance anyway, then it's just more efficient to sample the lights directly. To sample a ray from the intersection point to a light
+        source, we just used the methods provided on the light objects, which gave the distance and pdf as well. After constructing the ray, we still have to ensure that it doesn't intersect any other objects in between the original intersection and
+        the light, so we shoot out the ray again and check for any intersections between a small constant and the distance to the light minus some small constant. If no other objects were intersected, we again multiplied by the cosine of the angle
+        formed and the BSDF at the intersection point to get the sampled irradiance. For area light sources, we sampled n_samples times but for point light sources, we only sampled once since there's only one point on the light anyway. Then, after
+        dividing each sample by their pdf, we average over all the light samples we've taken.
+      </p>
+      <hr />
+      <div class="flex-center">
+        <h4>Hemisphere sampling (left), Light Importance Sampling (right)</h4>
+        <div class="images">
+          <img src="imgs/CBbunny_H_16_8.png" class="img" alt="" />
+          <img src="imgs/CBbunny_16_8.png" class="img" alt="" />
+        </div>
+      </div>
+      <hr />
+      <div class="flex-center">
+        <h4>Importance sampling</h4>
+        <div class="images">
+          <figure>
+            <img src="imgs/bunny_l1.png" class="img" alt="" />
+            <figcaption>1 sample per light</figcaption>
+          </figure>
+          <figure>
+            <img src="imgs/bunny_l4.png" class="img" alt="" />
+            <figcaption>4 samples per light</figcaption>
+          </figure>
+          <figure>
+            <img src="imgs/bunny_l16.png" class="img" alt="" />
+            <figcaption>16 samples per light</figcaption>
+          </figure>
+          <figure>
+            <img src="imgs/bunny_l64.png" class="img" alt="" />
+            <figcaption>64 samples per light</figcaption>
+          </figure>
+        </div>
+        <p>
+          From the images above, we can see that the more samples per light, the less noise there is in the shadows. For the first three images, the shadows look quite speckled, while it's less noticeable in the last image. There's still some noise
+          in the image though concerning the borders that is likely due to the face that there's only 1 sample per pixel in the image.
+        </p>
+        <p>
+          In general, uniform hemisphere sampling looks a lot noiser than light importance sampling because a lot of the random light samples don't actually hit any light sources in uniform sampling. Since light sampling specifically samples points
+          on the lights, we can use a lot fewer samples to generate a good looking image. Both techniques will produce good results though, if there are many many samples.
+        </p>
+        <p>
+          One of the main challenges we ran into for this section was figuring out which vectors needed to be changed to object coordinates and which ones needed to be changed to world coordinates. Uniform hemisphere sampling produced object-view
+          w_in vectors while light sampling produced world-view coordinates, and BSDF calculations needed to be in object coordinates while intersections were done in world coordinates. It was a bit challenging to figure it out, but it worked out in
+          the end.
+        </p>
+      </div>
+    </section>
   </body>
 </html>
