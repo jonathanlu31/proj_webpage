@@ -103,5 +103,16 @@
         </p>
       </div>
     </section>
+    <section>
+      <h2>Part 5: Adaptive Sampling</h2>
+      <p>
+        The principle behind adaptive sampling is that not every pixel needs to be sampled the same amount. Some pixels might converge at a particular value much faster than other pixels and thus require less samples. To determine whether or not a
+        pixel has converged, we calculate a 95% confidence interval that the average pixel illuminance is within a certain tolerance of the sampled average. To do this, we calculate the sample mean and variance every samplesPerBatch samples and
+        calculate a measure I proportional to the sample variance and the inverse of the square root of the number of samples taken. This is then compared with the sample mean if it's within the threshold, and if so, we can end sampling early for
+        that pixel. Otherwise, we'd take a max of num_samples samples for each pixel. We don't directly use the radiance in the mean and variance calculation but instead measure the illuminance. We also had some tricks for calculating the mean and
+        variance using intermediate values.
+      </p>
+      <p>One of the challenges we ran into for this section was just remembering to use the actual number of samples taken instead of num_samples for the pixel average and the rate.</p>
+    </section>
   </body>
 </html>
