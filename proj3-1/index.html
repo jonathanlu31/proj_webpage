@@ -51,6 +51,20 @@
         To handle the edge case where all the primitives lie on one side of the midpoint of the max extent axis (if start or end pointed at the same element as the pointer returned by std::partition), then we dynamically adjust the lower and upper bound until we find a midpoint that doesn't have all primitives on one side.
         After that, we then recursively set the left and right pointer and pass in the left half to the first recursive call, then the right half to the right recursive call. 
       </p>
+      <div class="flex-center">
+        <h4>Images with normal shading for a few large .dae files only with BVH acceleration. </h4>
+        <div class="images">
+          <img src="imgs/CBspheres.png" class="img" alt="" />
+          <img src="imgs/cow.png" class="img" alt="" />
+          <img src="imgs/teapot_normal.png" class="img" alt="" />
+        </div>
+      </div>
+      
+      <p>
+        To compare times with and without BVH acceleration, we checked out to our commit with just part 1 completed.
+        To render cow.dae without BVH acceleration, it took 43.43 seconds, and averaged 1529 intersection tests per ray. To render cow.dae with BVH acceleration, it took 4.4 seconds, and averaged 3.67 intersection tests per ray.
+        To render teapot.dae without BVH acceleration, it took 18.27 seconds, and averaged 628 intersection tests per ray. To render teapot.dae with BVH acceleration, it took 3.43 seconds, and averaged 2.89 intersection tests per ray.
+      </p>
     </section>
     <section>
       <h2>Part 3: Direct Illumination</h2>
