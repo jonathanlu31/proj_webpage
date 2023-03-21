@@ -69,12 +69,26 @@
     <section>
       <h2>Part 2: Bounding Value Hierarchy</h2>
       <p>
-        For our BVH construction algorithm, given that trees are recursive data structures, we recurisvely built our BVH. We began by making a bounding box around all the primitives in the scene. Then, if the bounding box contains less than or equal
+        For our BVH construction algorithm, given that trees are recursive data structures, we recursively built our BVH. We began by making a bounding box around all the primitives in the scene. Then, if the bounding box contains less than or equal
         to max leaf size primitives, then we make a new Node out of that bounding box and return. Otherwise, if the bounding box contains more than max leaf size primitives, we need to partition our primitives into two disjoint sets. As a heuristic,
         we calculated the max extent axis of the bounding box and used the midpoint of that axis to partition each primitive to two disjoint sets. Using the std::partition function, it returns a pointer to the middle element that we can pass into the
         recursive call. To handle the edge case where all the primitives lie on one side of the midpoint of the max extent axis (if start or end pointed at the same element as the pointer returned by std::partition), then we dynamically adjust the
         lower and upper bound until we find a midpoint that doesn't have all primitives on one side. After that, we then recursively set the left and right pointer and pass in the left half to the first recursive call, then the right half to the
         right recursive call.
+      </p>
+      <div class="flex-center">
+        <h4>Images with normal shading for a few large .dae files only with BVH acceleration.</h4>
+        <div class="images">
+          <img src="imgs/lucy.png" class="img" alt="" />
+          <img src="imgs/dragon.png" class="img" alt="" />
+        </div>
+      </div>
+
+      <p>
+        To compare times with and without BVH acceleration, we checked out to our commit with just part 1 completed. To render cow.dae without BVH acceleration, it took 43.43 seconds, and averaged 1529 intersection tests per ray. To render cow.dae
+        with BVH acceleration, it took 4.4 seconds, and averaged 3.67 intersection tests per ray. To render teapot.dae without BVH acceleration, it took 18.27 seconds, and averaged 628 intersection tests per ray. To render teapot.dae with BVH
+        acceleration, it took 3.43 seconds, and averaged 2.89 intersection tests per ray. As seen above, assuming that the runtime without BVH acceleration is linear to the number of primitives, the runtime with BVH acceleration is approximately 3 *
+        log_10(time_without_BVH) - in other words, the runtime with BVH acceleration is logarithmic and is therefore much faster than the naive approach.
       </p>
     </section>
     <section>
@@ -137,6 +151,40 @@
           w_in vectors while light sampling produced world-view coordinates, and BSDF calculations needed to be in object coordinates while intersections were done in world coordinates. It was a bit challenging to figure it out, but it worked out in
           the end.
         </p>
+      </div>
+    </section>
+    <section>
+      <h2>Part 4: Global Illumination</h2>
+      <p></p>
+      <div class="images">
+        <figure>
+          <img src="imgs/spheres_s1.png" class="img" alt="" />
+          <figcaption>1 sample per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s2.png" class="img" alt="" />
+          <figcaption>2 samples per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s4.png" class="img" alt="" />
+          <figcaption>4 samples per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s8.png" class="img" alt="" />
+          <figcaption>8 samples per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s16.png" class="img" alt="" />
+          <figcaption>16 samples per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s64.png" class="img" alt="" />
+          <figcaption>64 samples per pixel</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_s1024.png" class="img" alt="" />
+          <figcaption>1024 samples per pixel</figcaption>
+        </figure>
       </div>
     </section>
     <section>
