@@ -32,6 +32,10 @@
         For task five, we optimized the process of sampling by focusing on sampling areas where the illuminace was converging slowly. If only a few samples were necessary to determine that a pixel's color was close to a certain value using confidence
         intervals, then we could stop sampling early.
       </p>
+      <p>
+        We encountered many challenges related to putting vectors in the right coordinate space. We also ran into issues with handling infinite recursion when all samples were on the same side during BVH because we weren't dynamically recalculating
+        the split point. Floating point division errors were also a bit of a headache for adaptive sampling. In general, we didn't have too many major bugs beyond just forgetting some small details like normalizing vectors.
+      </p>
     </section->
     <section->
       <h3>Part 1: Ray Generation and Scene Intersection</h3>
@@ -197,6 +201,13 @@
         variance using intermediate values.
       </p>
       <p>One of the challenges we ran into for this section was just remembering to use the actual number of samples taken instead of num_samples for the pixel average and the rate.</p>
+    </section>
+    <section>
+      <h2>Collaboration</h2>
+      <p>
+        Since this project was on the longer side, we ended up splitting up the parts; however, we still discussed our implementations so we both knew what the main ideas were. In the final stage of the project, we also met up in person to debug and
+        render the outputs on the instructional machines. We learned how to effectively parallel process the coding and testing/rendering process and about ways to more efficiently debug code like using the debugger.
+      </p>
     </section>
   </body>
 </html>
