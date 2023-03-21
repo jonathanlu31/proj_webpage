@@ -111,7 +111,7 @@
         source, we just used the methods provided on the light objects, which gave the distance and pdf as well. After constructing the ray, we still have to ensure that it doesn't intersect any other objects in between the original intersection and
         the light, so we shoot out the ray again and check for any intersections between a small constant and the distance to the light minus some small constant. If no other objects were intersected, we again multiplied by the cosine of the angle
         formed and the BSDF at the intersection point to get the sampled irradiance. For area light sources, we sampled n_samples times but for point light sources, we only sampled once since there's only one point on the light anyway. Then, after
-        dividing each sample by their pdf, we average over all the light samples we've taken.
+        dividing each sample by their pdf and computing the Monte Carlo estimate over all the lights, we sum together the Monte Carlo light estimates we've taken.
       </p>
       <hr />
       <div class="flex-center">
