@@ -161,6 +161,46 @@
       <h2>Part 4: Global Illumination</h2>
       <p>For indirect lighting, we primarily relied on the implementation of an at_least_one_bounce_radiance function, which recursively simulated the way light bounces, with russian roulette to terminate a light ray at some point. If the depth of the ray was 0, then we would just return the 0 vector, as we wouldn't add to the illuminance anymore. If the depth was 1, we just returned the result of calling one_bounce_radiance. Otherwise, if we had already made one indirect bounce, we flipped a coin with probability 0.4 of returning true, and returned L_out at that point.
       Otherwise, we sampled from the bsdf of the intersection and calculated the next ray given the hit point, and set the ray's min_t to be the epsilon offset, and decremented the depth so we would rech our base case. If the bvh intersected with the next ray, then we recursively called at_least_one_bounce_radiance, and added the sample * radiance from the next bounce * cosine(wi), divided by the pdf and 1 - probability_return_true (in other words, 1 - probability that russian roulette would avoid further recursive calls.</p>
+      
+      <div class="images">
+        <figure>
+          <img src="imgs/spheresOverall.png" class="img" alt="" />
+          <figcaption>Spheres with global illumination, 1024 samples per pixel. </figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/bunnyOverall.png" class="img" alt="" />
+          <figcaption>Bunny with global illumination, 1024 samples per pixel. </figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/directBunny.png" class="img" alt="" />
+          <figcaption>Bunny with only direct illumination, 1024 samples per pixel. </figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/indirectBunny.png" class="img" alt="" />
+          <figcaption>Bunny with only indirect illumination, 1024 samples per pixel.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/Bunny0.png" class="img" alt="" />
+          <figcaption>CBunny with max_ray_depth set to 0, 1024 samples per pixel.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/Bunny1.png" class="img" alt="" />
+          <figcaption>CBunny with max_ray_depth set to 1, 1024 samples per pixel.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/Bunny2.png" class="img" alt="" />
+          <figcaption>CBunny with max_ray_depth set to 2, 1024 samples per pixel.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/Bunny3.png" class="img" alt="" />
+          <figcaption>CBunny with max_ray_depth set to 3, 1024 samples per pixel.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/Bunny100.png" class="img" alt="" />
+          <figcaption>CBunny with max_ray_depth set to 100, 1024 samples per pixel.</figcaption>
+        </figure>
+      </div>
+      
       <div class="images">
         <figure>
           <img src="imgs/spheres_s1.png" class="img" alt="" />
