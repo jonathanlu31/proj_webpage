@@ -28,7 +28,8 @@
       <p>For intersections with spheres, we again used the formulas derived in the lecture slides and simply verified that the discriminant was positive and that the times outputted were within bounds.</p>
       <p>
         Once primitive intersection was determined, we updated the intersection information to record the surface normal, the bsdf, the t value, and the primitive, and we updated the ray max_t so that, in the future, it would only test for
-        intersections in front of this one.
+        intersections in front of this one. Calculating the surface normal for the sphere is easy as it's just the subtraction of the intersection and the sphere's origin and normalized; however, for the triangle, the surface normal is the
+        barycentric interpolated normal from the normal vectors of the vertices. This was also normalized.
       </p>
       <p>We ran into challenges for this part mainly when converting screen coordinates to sensor coordinates since calculating the proper offsets and normalizing the resulting direction vector was easy to mess up or forget.</p>
       <hr />
