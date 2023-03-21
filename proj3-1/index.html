@@ -42,6 +42,16 @@
       </div>
     </section->
     <section>
+      <h2>Part 2: Bounding Value Hierarchy</h2>
+      <p>
+        For our BVH construction algorithm, given that trees are recursive data structures, we recurisvely built our BVH. We began by making a bounding box around all the primitives in the scene.
+        Then, if the bounding box contains less than or equal to max leaf size primitives, then we make a new Node out of that bounding box and return. Otherwise, if the bounding box contains more than max leaf size primitives, we need to partition our primitives into two disjoint sets.
+        As a heuristic, we calculated the max extent axis of the bounding box and used the midpoint of that axis to partition each primitive to two disjoint sets. Using the std::partition function, it returns a pointer to the middle element that we can pass into the recursive call.
+        To handle the edge case where all the primitives lie on one side of the midpoint of the max extent axis (if start or end pointed at the same element as the pointer returned by std::partition), then we dynamically adjust the lower and upper bound until we find a midpoint that doesn't have all primitives on one side.
+        After that, we then recursively set the left and right pointer and pass in the left half to the first recursive call, then the right half to the right recursive call. 
+      </p>
+    </section>
+    <section>
       <h2>Part 3: Direct Illumination</h2>
       <p>
         To handle direct lighting, we work with rays that have already intersected with an object in the scene. Thus, we know what w_out is, i.e. the ray from the intersection point out to the camera, and now we need to figure out what the ray of
