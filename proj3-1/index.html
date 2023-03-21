@@ -8,6 +8,30 @@
     <a href="https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html">https://jonathanlu31.github.io/proj_webpage/proj3-1/index.html</a>
     <section->
       <h2>Overview</h2>
+      <p>
+        In this project, we worked on simulating light in a rendered scene. This centered around the idea of path tracing, where we shot rays out from the perspective of the camera and recorded how the rays bounced around the scene and transported
+        light. The first task focused on figuring out how to represent these rays. Given the camera location and direction of view in the scene, we mapped the screen coordinates to a sensor with height and width given by the field of view and
+        centered it at camera centric coordinates (0, 0, -1). Each screen coordinate now had a mapping to a ray in the scene, and we determined the color for a pixel via the radiance along that ray. To get a less noisy image, we also sampled multiple
+        times for each pixel.
+      </p>
+      <p>
+        For task two, we want to speed up ray intersection tests with objects/primitives in the scene. To do this, we use an acceleration structure called a bounding volume hierarchy. This effectively wraps primitives in the scene in bounding boxes
+        that progressively get larger and larger as they encompass more BVH nodes. Then, to test for intersection, we check if the ray intersects a particular bounding box and keep narrowing down in bounding box resolution until we hit the actual
+        primitive. The speed up comes from the fact that if there's no intersection at any of the steps along the way, we can end early and not test intersection for any of the primitives in the region.
+      </p>
+      <p>
+        For task three, we started actually simulating the light bouncing around the scene from light sources. First we focused on zero bounce lightiing in which the ray sampled for the coordinate intersects with a light source. Then, we considered
+        one bounce lighting where the ray intersected another object in the scene first and then intersected a light source. To sample the incoming ray direction, we used both uniform hemisphere sampling and light source importance sampling and found
+        that the importance sampling was very effective at reducing the noise in the final output.
+      </p>
+      <p>
+        For task four, we implemented indirect lighting aka global illumination. This involved recursively checking the radiance at each intersection that a ray could have had before hitting a light source. We set a max number of bounces, but also
+        used russian roulette to randomly terminate the ray bounces. This allowed us to have illumination from light bouncing in between objects and thus having colored shadows.
+      </p>
+      <p>
+        For task five, we optimized the process of sampling by focusing on sampling areas where the illuminace was converging slowly. If only a few samples were necessary to determine that a pixel's color was close to a certain value using confidence
+        intervals, then we could stop sampling early.
+      </p>
     </section->
     <section->
       <h3>Part 1: Ray Generation and Scene Intersection</h3>
@@ -18,7 +42,7 @@
       </p>
       <p>
         Now that we know how to generate a ray for a particular screen coordinate, we determine radiance for a pixel by sampling rays uniformly within the pixel area and then averaging those samples. Since the pixel area is 1, then the Monte Carlo
-        estimate is just an average over the samples.
+        estimate is just an average over the samples. This amounted to just adding a number from (0, 1) to the base pixel coordinates.
       </p>
       <p>
         To determine the radiance from a ray, we need to determine which objects it intersects. For intersections with triangles, the general idea was to determine if the ray intersected the plane of the triangle and then check if the intersection
@@ -45,11 +69,12 @@
     <section>
       <h2>Part 2: Bounding Value Hierarchy</h2>
       <p>
-        For our BVH construction algorithm, given that trees are recursive data structures, we recurisvely built our BVH. We began by making a bounding box around all the primitives in the scene.
-        Then, if the bounding box contains less than or equal to max leaf size primitives, then we make a new Node out of that bounding box and return. Otherwise, if the bounding box contains more than max leaf size primitives, we need to partition our primitives into two disjoint sets.
-        As a heuristic, we calculated the max extent axis of the bounding box and used the midpoint of that axis to partition each primitive to two disjoint sets. Using the std::partition function, it returns a pointer to the middle element that we can pass into the recursive call.
-        To handle the edge case where all the primitives lie on one side of the midpoint of the max extent axis (if start or end pointed at the same element as the pointer returned by std::partition), then we dynamically adjust the lower and upper bound until we find a midpoint that doesn't have all primitives on one side.
-        After that, we then recursively set the left and right pointer and pass in the left half to the first recursive call, then the right half to the right recursive call. 
+        For our BVH construction algorithm, given that trees are recursive data structures, we recurisvely built our BVH. We began by making a bounding box around all the primitives in the scene. Then, if the bounding box contains less than or equal
+        to max leaf size primitives, then we make a new Node out of that bounding box and return. Otherwise, if the bounding box contains more than max leaf size primitives, we need to partition our primitives into two disjoint sets. As a heuristic,
+        we calculated the max extent axis of the bounding box and used the midpoint of that axis to partition each primitive to two disjoint sets. Using the std::partition function, it returns a pointer to the middle element that we can pass into the
+        recursive call. To handle the edge case where all the primitives lie on one side of the midpoint of the max extent axis (if start or end pointed at the same element as the pointer returned by std::partition), then we dynamically adjust the
+        lower and upper bound until we find a midpoint that doesn't have all primitives on one side. After that, we then recursively set the left and right pointer and pass in the left half to the first recursive call, then the right half to the
+        right recursive call.
       </p>
     </section>
     <section>
