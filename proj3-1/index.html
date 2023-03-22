@@ -246,7 +246,10 @@
         that pixel. Otherwise, we'd take a max of num_samples samples for each pixel. We don't directly use the radiance in the mean and variance calculation but instead measure the illuminance. We also had some tricks for calculating the mean and
         variance using intermediate values.
       </p>
-      <p>One of the challenges we ran into for this section was just remembering to use the actual number of samples taken instead of num_samples for the pixel average and the rate.</p>
+      <p>
+        One of the challenges we ran into for this section was just remembering to use the actual number of samples taken instead of num_samples for the pixel average and the rate. We also noticed that there were some dark spots under the spheres or
+        the bunny that received no light, so we made sure not to end sampling early if the rays were intersecting objects but still had zero mean illuminance. This helped us get rid of the dark spots.
+      </p>
       <div class="images">
         <figure>
           <img src="imgs/bunny.png" class="img" alt="" />
