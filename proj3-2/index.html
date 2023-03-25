@@ -75,26 +75,29 @@
     <section->
       <h3>Part 4. Depth of Field</h3>
       <p>
-            
+          A pinhole camera model is essentially a lens with a very small, fixed aperture (thus the name pinhole). As light passes through the pinhole, an inverted image is formed on the opposite side.
+        As for a thin-lens camera model, the lens radius is dynamic (thus growing the aperture). Images are formed using a thin-lens camera model by refracting light rays along the thin-lens and forming an image on the plane of focus. We did this in the project by randomly sampling a location along the lens radius, then
+        calculating the resulting ray as it approaches the plane of focus. Additionally, a pinhole camera model always puts everything in focus regardless of the distance from the camera, whereas with the thin-lens, only objects within a certain range are in focus.
+        This is explored in the focus stack below. Lastly, as a practical matter, a pinhole camera model is therefore not necessarily representative of how camera's in real life function, but the computations are much faster since you're not dealing with as many computations as you would with the thin-lens camera model.
       </p>
       <div class="images">
         <figure>
-          <img src="imgs/CBDragon_floor.png" class="img" alt="" />
+          <img src="imgs/CBdragon_floor.png" class="img" alt="" />
           <figcaption>Focus Stack Part 1: Focusing on the floor.</figcaption>
-          <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
+          <p>We begin the focus stack by focusing on the floor, closest to the bottom of the image. As you can see, the walls in the bottom left and right corners appear sharp, contrasted with the blurry dragon and ceiling.</p>
         </figure>
         <figure>
-          <img src="imgs/CBDragon_head.png" class="img" alt="" />
+          <img src="imgs/CBdragon_head.png" class="img" alt="" />
           <figcaption>Focus Stack Part 2: Focusing on the head.</figcaption>
-          <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
+          <p>We continue the focus stack by focusing on the head of the dragon. As you can see, the walls in the bottom left and right corners appear sharp, contrasted with the blurry dragon and ceiling.</p>
         </figure>
         <figure>
-          <img src="imgs/CBDragon_body.png" class="img" alt="" />
+          <img src="imgs/CBdragon_body.png" class="img" alt="" />
           <figcaption>Focus Stack Part 3: Focusing on the body.</figcaption>
           <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
         </figure>
         <figure>
-          <img src="imgs/CBDragon_ceiling.png" class="img" alt="" />
+          <img src="imgs/CBdragon_ceiling.png" class="img" alt="" />
           <figcaption>Focus Stack Part 1: Focusing on the ceiling.</figcaption>
           <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
         </figure>
