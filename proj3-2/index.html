@@ -8,12 +8,63 @@
     <a href="https://jonathanlu31.github.io/proj_webpage/proj3-2/index.html">https://jonathanlu31.github.io/proj_webpage/proj3-2/index.html</a>
     <section->
       <h2>Overview</h2>
-      <p>
-        
-      </p>
+      <p></p>
     </section->
     <section->
-      <h3>Part 1. Mirror and Glass Materials/h3>
+      <h3>Part 1. Mirror and Glass Materials</h3>
+      <div class="images">
+        <figure>
+          <img src="imgs/spheres_m0.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=0</figcaption>
+          <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m1.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=1</figcaption>
+          <p>
+            With one bounce, the light can bounce off the objects so we see the walls. However, the balls only bounce light from the light source in the reflection direction, so there's only one bright spot on the otherwise dark ball. Some of the
+            rays in the right sphere refract into the sphere so there's some dark spots.
+          </p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m2.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=2</figcaption>
+          <p>
+            For two bounces, the light bounces off the walls and bounces off the ball into the camera so we can see the reflection of the room on the left sphere. The right ball is mostly refractive so we can't see much of the reflection from the
+            surroundings. There's a bit of brightness at the bottom of the right sphere that is due to the refraction of the light from the light source as it bounces into the ball, then out of the ball towards the camera for two total intersections.
+            The reflection of the glass ball is still black because the only light that comes off the ball and reflects is from the overhead light.
+          </p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m3.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=3</figcaption>
+          <p>
+            With 3 bounces, the light can bounce off the walls, then into the glass sphere, and then refract towards the camera upon exiting. The brightness at the bottom of the ball is now mostly on the ground since the light can enter the sphere,
+            then exit and hit the ground, and then bounce towards the camera. The reflection of the glass ball in the mirror is no longer completely black but has a faint reflection of the room. This is because the light that bounces off the walls,
+            reflects off the glass ball, and reflects off the mirror can come towards the camera, which provides a faint picture of the room.
+          </p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m4.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=4</figcaption>
+          <p>
+            With four bounces, the light that refrace through the glass ball on the ground can now bounce back towards the ball and then into the camera, thus making the bottom of the ball brighter as well. Additionally, the light that refracted
+            through the ball and hit the floor can now bounce towards the right wall and go back to the camera, so the right wall is lit up. Finally, the reflection of the glass ball in the left ball is now blue because the light that hit the blue
+            wall can bounce and refract through the glass ball, and then bounce off the mirror towards the camera. Wall + enter glass + exit glass + mirror gives 4 bounces.
+          </p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m5.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=5</figcaption>
+          <p>The image looks almost exactly the same as the 4 bounce image.</p>
+        </figure>
+        <figure>
+          <img src="imgs/spheres_m100.png" class="img" alt="" />
+          <figcaption>Spheres max_depth=100</figcaption>
+          <p>There are also no significant differences with the 5 bounce image.</p>
+        </figure>
+      </div>
       <p></p>
+    </section->
   </body>
 </html>

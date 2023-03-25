@@ -8,6 +8,14 @@
 .img {
   width: auto;
   height: 18rem;
+  margin: 0;
+  align-self: center;
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
 }
 
 .bez_container {
@@ -15,7 +23,8 @@
 }
 
 body {
-  margin: 0 20%;
+  margin: 3rem 20%;
+  padding: 0;
 }
 
 .flex-center {
