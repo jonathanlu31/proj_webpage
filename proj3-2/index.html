@@ -75,9 +75,9 @@
     <section->
       <h3>Part 4. Depth of Field</h3>
       <p>
-          A pinhole camera model is essentially a lens with a very small, fixed aperture (thus the name pinhole). As light passes through the pinhole, an inverted image is formed on the opposite side.
+          A pinhole camera model is essentially a lens with a very small, fixed aperture (thus the name pinhole). As light passes through the pinhole, an inverted image is formed on the opposite side via the radiance of a ray connecting one each pixel to the point we're imaging.
         As for a thin-lens camera model, the lens radius is dynamic (thus growing the aperture). Images are formed using a thin-lens camera model by refracting light rays along the thin-lens and forming an image on the plane of focus. We did this in the project by randomly sampling a location along the lens radius, then
-        calculating the resulting ray as it approaches the plane of focus. Additionally, a pinhole camera model always puts everything in focus regardless of the distance from the camera, whereas with the thin-lens, only objects within a certain range are in focus.
+        calculating the resulting ray as it approaches the plane of focus. Something to note is that points not along the plane of focus will have rays that don't converge like they do in a pinhole camera, leading to blurriness. Additionally, a pinhole camera model always puts everything in focus regardless of the distance from the camera, whereas with the thin-lens, only objects within a certain range are in focus.
         This is explored in the focus stack below. Lastly, as a practical matter, a pinhole camera model is therefore not necessarily representative of how camera's in real life function, but the computations are much faster since you're not dealing with as many computations as you would with the thin-lens camera model.
       </p>
       <div class="images">
