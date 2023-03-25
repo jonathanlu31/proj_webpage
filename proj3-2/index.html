@@ -8,7 +8,13 @@
     <a href="https://jonathanlu31.github.io/proj_webpage/proj3-2/index.html">https://jonathanlu31.github.io/proj_webpage/proj3-2/index.html</a>
     <section->
       <h2>Overview</h2>
-      <p></p>
+      <p>
+        In this project, we decided to implement parts 1 and 4. When choosing which parts of the project to complete, we chose the ones that seemed the coolest to us (representing glass and mirror materials, as well as depth of focus were really interesting topics). 
+        Part 1 was mostly smooth sailing following along the formulas in the specifications - our two fixes came from fixing floating point errors and needing to cast to the correct type to prevent loss of information, and also we found that we were reflecting too many times in the Glass BSDF, so we tuned the parameter to our call to coin_flip.
+        For part 4, we split up the task into the pseudocode provided, but didn't take the time to properly study the diagram before jumping in. Consequently, the largest headache came from calculating pFocus, as we multiplied by focalDistance (rather than the negation), effectively turning our rays the wrong way.
+        As a result, nothing was being rendered for a very long time until we went back to the diagram to correlate each step to the picture.
+        Overall, the project yielded some really cool renders that we're excited to share (and maybe use in our final project)!
+      </p>
     </section->
     <section->
       <h3>Part 1. Mirror and Glass Materials</h3>
@@ -115,6 +121,14 @@
           <p>With a max ray depth of zero, there are no bounces in the image so none of the objects are visible. Only the direct lighting can be seen.</p>
         </figure>
       </div>
+    </section->
+    <section->
+      <h3>Collaboration</h3>
+      <p>
+            For this project, we split up the tasks - Jonathan did task 1, and Jedi did task 4. Given the amount of pseudocode provided in both tasks, neither needed the other for debugging support, but we 
+        discussed the concepts if we weren't sure what certain lines were doing. We also performed the renders on the other person's work and read over each other's writeups to ensure that we understood the material in both sections.
+      </p>
+      
     </section->
   </body>
 </html>
