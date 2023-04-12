@@ -100,5 +100,40 @@
         </figure>
       </div>
     </section->
+    <section->
+      <h3>Part 5. Shading</h3>
+      <h4>Blinn-Phong Shading</h4>
+      <p>
+        The Blinn-Phong shading model models lighting on objects as consisting of three main types, ambient, diffuse, and specular. Ambient lighting is general lighting as if a small amount of light was coming from all directions and lights
+        everything at every angle to a certain degree. Diffuse lighting is lighting that is view-independent. It models light that comes in from a particular direction and assumes that it gets scattered uniformly in all directions. Thus, the
+        brightness on a particular part of an object only depends on its distance and angle to the light source. Specular lighting is view-dependent, where the brightness is maximized when the angle of view from the normal matches the angle of light
+        coming in from the normal. This means the direction of view will be aligned with the direction of reflection. Also, by controlling the exponent power, we can control how small or large the specular area is.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/ambient.png" class="img" alt="" />
+          <figcaption>Ambient, k_a = 0.5, I_a vector of ones</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/diffuse.png" class="img" alt="" />
+          <figcaption>Diffuse, k_d = u_color</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/specular.png" class="img" alt="" />
+          <figcaption>Specular, k_s = 0.5, p = 100</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/phong.png" class="img" alt="" />
+          <figcaption>Blinn-Phong, all the same parameters as above except k_a = 0.1</figcaption>
+        </figure>
+      </div>
+      <div class="images">
+        <figure>
+          <img src="imgs/plane.png" class="img" alt="" />
+          <figcaption>Resting on a plane</figcaption>
+        </figure>
+      </div>
+      <p></p>
+    </section->
   </body>
 </html>
