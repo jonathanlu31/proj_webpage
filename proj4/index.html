@@ -1,7 +1,104 @@
 <html>
-	<head>
-	</head>
-	<body>
-		Project 4 here
-	</body>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Project 4: Cloth Sim</h1>
+    <h3>Jedi Tsang and Jonathan Lu</h3>
+    <a href="https://jonathanlu31.github.io/proj_webpage/proj4/index.html">https://jonathanlu31.github.io/proj_webpage/proj4/index.html</a>
+    <section->
+      <h2>Overview</h2>
+      <p></p>
+    </section->
+    <section->
+      <h3>Part 3. Collisions with other objects</h3>
+      <p>
+        A lower spring constant will reduce the integrity of the cloth and the forces keeping it together so the cloth hangs more directly down and stretches lower. With a higher spring constant, the cloth becomes more stiff so when it rests on the
+        sphere, it still extends outwards a lot as the springs are preventing it from bending and extending downwards.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/sphere_ks500.png" class="img" alt="" />
+          <figcaption>ks = 500</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/sphere_ks5000.png" class="img" alt="" />
+          <figcaption>ks = 5000</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/sphere_ks50000.png" class="img" alt="" />
+          <figcaption>ks = 50000</figcaption>
+        </figure>
+      </div>
+      <div class="images">
+        <figure>
+          <img src="imgs/plane.png" class="img" alt="" />
+          <figcaption>Resting on a plane</figcaption>
+        </figure>
+      </div>
+      <p></p>
+    </section->
+    <section->
+      <h3>Part 4. Self Collisions</h3>
+      <h4>Default parameters falling cloth</h4>
+      <div class="images">
+        <figure>
+          <img src="imgs/selfC_start.png" class="img" alt="" />
+          <figcaption>Early state as the cloth just begins to fall</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/selfC_middle.png" class="img" alt="" />
+          <figcaption>Intermediate state where the cloth starts the bend but before it fully collides with the ground</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/selfC_end.png" class="img" alt="" />
+          <figcaption>Near-resting state where the cloth has generally fully folded</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/selfC_rest.png" class="img" alt="" />
+          <figcaption>Final resting state</figcaption>
+        </figure>
+      </div>
+      <h4>Varying density</h4>
+      <p>
+        A lower density cloth is a lighter cloth, all else being equal, so the dominant force in the simulation comes from the spring forces. This means when the cloth hits the ground, it'll bounce comparatively high and at a resting state, it'll be
+        pretty smooth since the point masses are light enough that the springs can fully extend.
+      </p>
+      <p>
+        With a high density cloth, the dominant force will come from gravity, so as the cloth starts falling, it immediately folds a lot and doesn't bounce. Additionally, at rest, gravity acts to keep the point masses stationary and crumpled so the
+        cloth has many folds.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/low_density_bounce.png" class="img" alt="" />
+          <figcaption>Low density cloth bounces after hitting the ground</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/low_density_end.png" class="img" alt="" />
+          <figcaption>Low density cloth resting state</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/high_density_folds.png" class="img" alt="" />
+          <figcaption>High density cloth resting state</figcaption>
+        </figure>
+      </div>
+      <h4>Varying spring constant</h4>
+      <p>The spring constant generally has an inverse effect compared to density in these simulations. With a low spring constant, gravity/external forces are dominant so the cloth folds easily and remains crumpled at rest.</p>
+      <p>With a high spring constant, the spring forces will be dominant and try to return the cloth to its normal flat state. Thus, it tends to bounce more upon hitting the ground, and at rest, it's flatter and has less folds.</p>
+      <div class="images">
+        <figure>
+          <img src="imgs/low_spring_end.png" class="img" alt="" />
+          <figcaption>Low spring constant cloth resting state</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/high_spring_bounce.png" class="img" alt="" />
+          <figcaption>High spring constant cloth bounces after hitting the ground</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/high_spring_end.png" class="img" alt="" />
+          <figcaption>High spring constant cloth resting state</figcaption>
+        </figure>
+      </div>
+    </section->
+  </body>
 </html>
