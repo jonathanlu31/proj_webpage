@@ -8,7 +8,19 @@
     <a href="https://jonathanlu31.github.io/proj_webpage/proj4/index.html">https://jonathanlu31.github.io/proj_webpage/proj4/index.html</a>
     <section->
       <h2>Overview</h2>
-      <p></p>
+      <p>
+        Our goal in this project was to create a physically based simulator for cloth materials. First, we constructed the cloth using a mass-spring system where point masses were evenly dispersed along a given area and connected with different kinds
+        of springs like structural, bending, and shear springs. After the basic structure was made, we added support for gravity and motion using Verlet integration, Hook's law, damping, and some position update constraints so the springs wouldn't be
+        deformed too much in one step. These basic rules allowed the cloth to fall realistically, so then we added support for collisions so the cloth could land and rest on an object. We implemented collision tests for spheres and planes and
+        constrained its motion so that if the next point mass position would go inside the object, we forced it to rest slightly above the surface. After that, we added self collision tests so that if two point masses got too close to each other,
+        they'd be forced apart to a general minimum distance. This was optimized by using spatial hashing so that certain points only needed to test for collision if they were in the same spatial region. Finally, we added different shaders to give a
+        nice appearance to the cloth. Blinn-Phong model shading allowed for semi-realistic light shading, and texture maps, bump mapping, and displacement mapping added more flavor to the appearance. Displacement mapping was especially unique since
+        not only were the pixel colors set by the shader, but also to some extent, the vertex positions. Finally, the mirror reflection added a sort of ray-tracing flavor to the project.
+      </p>
+      <p>
+        We ran into some challenges with ensuring the vectors and forces were pointing the right direction and that vectors were normalized. We also had some other small bugs with point mass position correction. Although it wasn't exactly a bug, we
+        had some trouble figuring out the correct parameters for the shaders to reproduce the source results; however, it was a fun experience playing around with how each parameter affected the final appearance.
+      </p>
     </section->
     <section->
       <h3>Part 3. Collisions with other objects</h3>
@@ -102,6 +114,11 @@
     </section->
     <section->
       <h3>Part 5. Shading</h3>
+      <p>
+        A shader program is a program that determines the color for a particular pixel on screen. There's a lot of different types of shaders that can be used to choose the color, for example, you can incorporate vertex normal information to do
+        normal shading, or incorporate lighting information like position of lights, angle of light and angle of viewing, etc. A vertex shader tracks information about vertices like their position and normal vectors, texture map coordinates, etc. The
+        position of vertices can be changed for displacement mapping. The program then interpolates these values along a face. Fragment shaders then use the values from the vertex shader to determine the output color of a fragment.
+      </p>
       <h4>Blinn-Phong Shading</h4>
       <p>
         The Blinn-Phong shading model models lighting on objects as consisting of three main types, ambient, diffuse, and specular. Ambient lighting is general lighting as if a small amount of light was coming from all directions and lights
