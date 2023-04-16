@@ -272,9 +272,10 @@
       <h4>Bump and displacement shader.</h4>
       <p>
         Below are images of bump and displacement mapping using texture_3.png. Bump mapping simulates a change in height by modifying the normal vectors of a given object to calculate a new dispaced world normal.
-        However, in displacement mapping, we actually change the position of vertices using the height map so that the actual geometry of our shape is different.
-        With a lower coarseness, the differences are hard to see - the bump and displacement mapping look quite similar. However, with a higher quality, the differences are more apparent. With the bump mapping, the illusion of raised geometry is not that convincing, as there aren't visible raises in the vertices.
-        However, with the displacement mapping, the changes in topology are clear and look much better.
+        However, in displacement mapping, we actually change the position of vertices using the height map so that the actual geometry of our shape is different. One consequence is that the shape of our sphere may look slightly jagged.
+        With a lower resolution, the differences are hard to see - the bump and displacement mapping look quite similar. However, with a higher quality, the differences are more apparent. With the bump mapping, the illusion of raised geometry is not that convincing, as there aren't visible raises in the vertices.
+        However, with the displacement mapping, the changes in topology are clear and look much more realistic.
+
       </p>
       <div class="images">
         <figure>
@@ -289,21 +290,21 @@
       <div class="images">
         <figure>
           <img src="imgs/proj4_5_bump_16.PNG" class="img" alt="" />
-          <figcaption>Bump mapping with lower coarseness (-o 16, -a 16).</figcaption>
+          <figcaption>Bump mapping -o 16, -a 16</figcaption>
         </figure>
         <figure>
           <img src="imgs/proj4_5_displacement_16.PNG" class="img" alt="" />
-          <figcaption>Displacement mapping with lower coarseness (-o 16, -a 16)</figcaption>
+          <figcaption>Displacement mapping -o 16, -a 16</figcaption>
         </figure>
       </div>
       <div class="images">
         <figure>
           <img src="imgs/proj4_5_bump_128.PNG" class="img" alt="" />
-          <figcaption>Bump mapping with higher coarseness (-o 128, -a 128).</figcaption>
+          <figcaption>Bump mapping with -o 128, -a 128.</figcaption>
         </figure>
         <figure>
           <img src="imgs/proj4_5_displacement_128.PNG" class="img" alt="" />
-          <figcaption>Displacement mapping with higher coarseness (-o 128, -a 128)</figcaption>
+          <figcaption>Displacement mapping with -o 128, -a 128</figcaption>
         </figure>
       </div>
       <h4>Mirror shader</h4>
