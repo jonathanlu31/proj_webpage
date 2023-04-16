@@ -32,6 +32,16 @@
       </p>
       <div class="images">
         <figure>
+          <img src="imgs/proj4_1_pinned2.PNG" class="img" alt="" />
+          <figcaption>Structure of point masses and springs.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/proj4_1_pinned2_1.PNG" class="img" alt="" />
+          <figcaption>Structure of point masses and springs (alternate angle) </figcaption>
+        </figure>
+      </div>
+      <div class="images">
+        <figure>
           <img src="imgs/proj4_1_structural.PNG" class="img" alt="" />
           <figcaption>Cloth without shearing constraints.</figcaption>
         </figure>
@@ -64,19 +74,60 @@
         
         Next, we experimented with some parameters in the simulation, notably, ks, density, and damping.
       </p>
+      <p>
+        First, we modified ks (the spring constant). Below are three photos with a ks value of 1, 1000, and 10,000 N/m. Per Hooke's law, a lower ks value would result in a smaller correction force being applied on our pointmass at each timestep. Consequently, the largest difference visually between ks values
+        is the resting state of the cloth. With low ks values, the cloth hangs more (due to less spring correction forces). With higher ks values, the cloth is much tighter, as the springs mitigate the impacts of the external forces like gravity.
+      </p>
       <div class="images">
         <figure>
-          <img src="imgs/proj4_1_structural.png" class="img" alt="" />
-          <figcaption>Cloth without shearing constraints.</figcaption>
+          <img src="imgs/proj4_2_ks1.PNG" class="img" alt="" />
+          <figcaption>ks = 1 N/m.</figcaption>
         </figure>
         <figure>
-          <img src="imgs/proj4_1_shearing.png" class="img" alt="" />
-          <figcaption>Cloth with shearing constraints.</figcaption>
+          <img src="imgs/proj4_2_ks1000.PNG" class="img" alt="" />
+          <figcaption>ks = 1000 N/m.</figcaption>
         </figure>
         <figure>
-          <img src="imgs/proj4_1_wireframe.png" class="img" alt="" />
-          <figcaption>Cloth with all constraints.</figcaption>
+          <img src="imgs/proj4_2_ks10000.PNG" class="img" alt="" />
+          <figcaption>ks = 10,000 N/m.</figcaption>
         </figure>
+      </div>
+      <p>
+       Next, we played with the density value. As expected, a cloth with a higher density (think a heavier fabric) sags more than a cloth with lower density. This makes sense
+        since the mass of the cloth is calculated using it's density, and a higher density would yield a higher mass. Since force increases as mass increases as well, the position of point masses would also change more quickly per timestep.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/proj4_2_density1.PNG" class="img" alt="" />
+          <figcaption>density = 1 g/cm^2.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/proj4_2_ks1000.PNG" class="img" alt="" />
+          <figcaption>density = 5000 g/cm^2.</figcaption>
+        </figure>
+      </div>
+      <p>
+       Lastly, we messed with the damping value. As opposed to the other two parameters, rather than modifying the rest state, changing the damping value modifies how long it takes the cloth to settle.
+        This is explained because a higher damping value means that more energy is lost per timestep. The damping value is used when calculating the new point mass position using Verlet integration.
+        These screenshots were taken after the cloth has dropped completely, and has "bounced" back up. As you can see, the screenshot with no damping shows parts of the cloth overshoot its original position when coming back up, whereas the screenshot with a damping value of 1% settles almost immediately.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/proj4_2_damping0.PNG" class="img" alt="" />
+          <figcaption>No damping.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/proj4_2_damping1.PNG" class="img" alt="" />
+          <figcaption>1% damping.</figcaption>
+        </figure>
+      </div>
+      <p>
+       Here is a photo of a cloth pinned on all 4 corners in its final resting state with default parameters.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/proj4_2_rest.PNG" class="img" alt="" />
+          <figcaption>No damping.</figcaption>
       </div>
       
     </section->
