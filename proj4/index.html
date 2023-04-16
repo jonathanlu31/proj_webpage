@@ -23,6 +23,31 @@
       </p>
     </section->
     <section->
+      <h2>Part 1. Masses and Springs</h2>
+      <p>
+        For the first part of the project, we represented our cloth by using a grid of point masses and springs. Depending on the orientation of the cloth (since we're working in 3-D space), we would place point masses uniformly distributed along the width and height of the cloth.
+        After pinning the relevant point masses, we applied the three types of springs (structural, shearing, and bending) to support dropping the cloth later in the project.
+        The largest problem we ran into was that the appropriate point masses weren't being pinned (none of them were being pinned at all). This was due to a faulty assumption that the cloth's pinned vector contained the exact locations of point masses to be pinned, rather than using the index.
+        To create the springs, we followed the constraints in the spec, and used helper functions to convert a given row and column to the appropriate index in the 1-d point_masses vector.
+      </p>
+      <div class="images">
+        <figure>
+          <img src="imgs/proj4_1_structural.png" class="img" alt="" />
+          <figcaption>Cloth without shearing constraints.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/proj4_1_shearing.png" class="img" alt="" />
+          <figcaption>Cloth with shearing constraints.</figcaption>
+        </figure>
+        <figure>
+          <img src="imgs/proj4_1_wireframe.png" class="img" alt="" />
+          <figcaption>Cloth with all constraints.</figcaption>
+        </figure>
+      </div>
+      
+    </section->
+    
+    <section->
       <h3>Part 3. Collisions with other objects</h3>
       <p>
         A lower spring constant will reduce the integrity of the cloth and the forces keeping it together so the cloth hangs more directly down and stretches lower. With a higher spring constant, the cloth becomes more stiff so when it rests on the
