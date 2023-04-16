@@ -32,15 +32,15 @@
       </p>
       <div class="images">
         <figure>
-          <img src="imgs/proj4_1_structural.png" class="img" alt="" />
+          <img src="imgs/proj4_1_structural.PNG" class="img" alt="" />
           <figcaption>Cloth without shearing constraints.</figcaption>
         </figure>
         <figure>
-          <img src="imgs/proj4_1_shearing.png" class="img" alt="" />
+          <img src="imgs/proj4_1_shearing.PNG" class="img" alt="" />
           <figcaption>Cloth with shearing constraints.</figcaption>
         </figure>
         <figure>
-          <img src="imgs/proj4_1_wireframe.png" class="img" alt="" />
+          <img src="imgs/proj4_1_wireframe.PNG" class="img" alt="" />
           <figcaption>Cloth with all constraints.</figcaption>
         </figure>
       </div>
@@ -49,7 +49,20 @@
     <section->
       <h2>Part 2. Simulation via numerical integration</h2>
       <p>
-        For the second part of the project, we 
+        For the second part of the project, we simulated dropping the cloth by first calculating the forces on each point mass, then using those forces to calculate the new positions.
+        Finally, we also utilized the springs to prevent too large of a difference from one timestep to another. 
+        First, we multiplied the mass of the cloth by each external acceleration using the formula F = ma to find the sum of the external forces.
+        Then, we utilized Hooke's law to calculate the spring correction forces by subtracting from each endpoint of the spring, taking it's norm (to find the distance), then subtracting by the rest length of the spring.
+        After multiplying by the spring constant, we're given the force, which we can just multiply by the unit vector of the distance vector to find the appropriate direction to apply the force in.
+        After we calculated the forces on each point mass, we used Verlet integration to compute the new position of each point mass by approximating the velocity to be the change in position from the last timestep to this timestep (which is why we store the last position of each point mass).
+        We then modify the new position based on a given damping term (higher damping means that there is a higher loss of energy at each timestep, meaning that the simulation will settle quicker).
+        Lastly, we constrain position updates such that between each timestep, the distance between two pointmasses connected by a spring would be at most 110% of the spring's rest length.
+        We do this by seeing if our new positions using Verlet integration would result in overstretch, to which we would correct both pointmasses by bringing them towards one another by calculating the direction vector and correcting on both ends.
+        If one end of the spring is pinned, then we apply the entire correction onto one pointmass.
+        
+        The largest errors came from not utilizing the direction vector when performing Verlet integration, so the appropriate amount of force was being calculated, but not in the right direction. This would cause our simulation to fly wildly all around the screen.
+        
+        Next, we experimented with some parameters in the simulation, notably, ks, density, and damping.
       </p>
       <div class="images">
         <figure>
